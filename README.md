@@ -20,7 +20,7 @@ cmd: ```curl "http://localhost:8080/send?message=hello"```
 Response: ```Received your message: hello :)```
 
 
-## serivce.proto
+# serivce.proto
 
 ```
 syntax = "proto3";
