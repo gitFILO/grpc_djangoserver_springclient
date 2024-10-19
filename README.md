@@ -19,5 +19,26 @@ cmd: ```curl "http://localhost:8080/send?message=hello"```
 
 Response: ```Received your message: hello :)```
 
+
+## serivce.proto
+
+```
+syntax = "proto3";
+
+package grpc_example;
+
+service ExampleService {
+    rpc SendMessage(RequestMessage) returns (ResponseMessage) {}
+}
+
+message RequestMessage {
+    string message = 1;
+}
+
+message ResponseMessage {
+    string reply = 1;
+}
+```
+
 ## Questions
 Feel free to reach out to me at x1xgudwls@naver.com.
