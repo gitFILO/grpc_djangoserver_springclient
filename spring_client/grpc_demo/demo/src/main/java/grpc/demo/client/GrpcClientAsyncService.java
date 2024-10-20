@@ -5,26 +5,26 @@ import grpc.example.MessageProto.ResponseMessage;
 import grpc.example.ExampleServiceGrpc;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
+import io.grpc.stub.StreamObserver;
 import org.springframework.stereotype.Service;
 
+
 @Service
-public class GrpcClientService {
+public class GrpcClientAsyncService {
 
-    private final ExampleServiceGrpc.ExampleServiceBlockingStub blockingStub;
+    private final ExampleServiceGrpc.ExampleServiceStub asyncStub;
 
-    public GrpcClientService() {
+    public GrpcClientAsyncService() {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
-                .usePlaintext() // gRPC 보안 설정을 비활성화 (개발 환경에서 사용)
+                .usePlaintext()
                 .build();
-        blockingStub = ExampleServiceGrpc.newBlockingStub(channel);
+        asyncStub = ExampleServiceGrpc.newStub(channel);
     }
-    
-    public String sendMessage(String message) {
+
+    public void sendMessageAsync(String message, StreamObserver<ResponseMessage> responseObserver) {
         // RequestMessage 생성
         RequestMessage request = RequestMessage.newBuilder().setMessage(message).build();
-        // gRPC 서버에 요청 전송
-        ResponseMessage response = blockingStub.sendMessage(request);
-        // 응답 반환
-        return response.getReply();
+        // 비동기 gRPC 서버 호출
+        asyncStub.sendMessage(request, responseObserver);
     }
 }
